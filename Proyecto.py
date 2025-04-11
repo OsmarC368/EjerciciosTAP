@@ -32,6 +32,13 @@ def showGraph(x, y):
 #     x = np.array([i for i in range(40)])
 #     showGraph(x, y)
 
+def pieGraph(datos):
+    y = [len([x for x in datos if x[1] == 'A']), len([x for x in datos if x[1] == "B"]), len([x for x in datos if x[1] == "C"])]
+    labels = ["A", "B", "C"]
+    plt.pie(y, labels=labels, autopct="%1.1f%%")
+    plt.legend(title = "Tipo ABC")
+    plt.show()
+
 def determinarTipoABC(datos):
     #sortedData = sorted(datos, key=lambda items: items[1])[::-1]
     n = 1
@@ -70,3 +77,7 @@ def determinarTipoABC(datos):
     return a
 
 print(determinarTipoABC(vectores[0]))
+for x in vectores:
+    x = np.array(x)
+    print(x*5000)
+    pieGraph(determinarTipoABC(x*5000))

@@ -34,6 +34,7 @@ def showGraph(x, y):
 
 def determinarTipoABC(datos):
     #sortedData = sorted(datos, key=lambda items: items[1])[::-1]
+    n = 1
     sortedData = sorted(datos)[::-1]
     totalSum = sum(sortedData)
     typeA = totalSum * 0.8
@@ -46,9 +47,10 @@ def determinarTipoABC(datos):
     popList = []
     for i, x in enumerate(sortedData):
         if x + auxA < typeA:
-            a.append([f"N-{i}", "A", x])
+            a.append([f"N-{n}", "A", x])
             auxA += x
             popList.append(i)
+            n+=1
         else:
             break
     [sortedData.pop(0) for i in popList]
@@ -57,9 +59,11 @@ def determinarTipoABC(datos):
     for x in sortedData[::-1]:
         if x + auxC < typeC:
             auxC += x
-            bc.append([f"N-{i}", "C", x])
+            bc.append([f"N-{n}", "C", x])
+            n+=1
         else:
-            bc.append([f"N-{i}", "B", x])
+            bc.append([f"N-{n}", "B", x])
+            n+=1
 
 
     [a.append(x) for x in bc[::-1]]

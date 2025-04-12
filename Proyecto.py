@@ -2,9 +2,9 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 
-x = random.randrange(80,100)
-vectores =[[random.randrange(80,100) for _ in range(40)] for _ in range(4)]
-print(f"x: {vectores}")
+# x = random.randrange(80,100)
+# vectores =[[random.randrange(80,100) for _ in range(40)] for _ in range(4)]
+# print(f"x: {vectores}")
 
 
 def determinarTipo(datos):
@@ -26,11 +26,7 @@ def showGraph(x, y):
     plt.plot(x, y)
     plt.show()
 
-# for x in vectores:
-#     print(f"El Vecto es: {determinarTipo(x)}")
-#     y = np.array(x)
-#     x = np.array([i for i in range(40)])
-#     showGraph(x, y)
+
 
 def pieGraph(datos):
     y = [len([x for x in datos if x[1] == 'A']), len([x for x in datos if x[1] == "B"]), len([x for x in datos if x[1] == "C"])]
@@ -76,8 +72,16 @@ def determinarTipoABC(datos):
     [a.append(x) for x in bc[::-1]]
     return a
 
-print(determinarTipoABC(vectores[0]))
-for x in vectores:
-    x = np.array(x)
-    print(x*5000)
-    pieGraph(determinarTipoABC(x*5000))
+
+if __name__ == "__main__":
+    #EJERCICIO 1
+    vectores =[[random.randrange(80,100) for _ in range(40)] for _ in range(4)]
+    for x in vectores:
+        print(f"El Vecto es: {determinarTipo(x)}")
+        y = np.array(x)
+        x = np.array([i for i in range(40)])
+        showGraph(x, y)
+    #EJERCICIO 2
+    newVector = [[random.randrange(5000, 20000) * random.randrange(5,10) for _ in range(40)] for _ in range(4)]
+    for z in newVector:
+        pieGraph(determinarTipoABC(z))

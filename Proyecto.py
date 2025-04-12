@@ -128,11 +128,47 @@ def modeloSimple():
         while((l-m*T < 0) or (l - ((m+1)*T) > 0)): m+=1
         R = D * (l-m*T)
 
-    print(f"\n Cantidad a pedir {Q}, la cual tendra un costo de {costo} y se debe pedir cada el inventario disminuya a {R} todo calculado en el tiempo {tiempoLabels[tiempo]}")
+    print(f"\n Cantidad a pedir {round(Q, 2)}, la cual tendra un costo de {round(costo, 2)} y se debe pedir cada el inventario disminuya a {round(R,2)} todo calculado en el tiempo {tiempoLabels[tiempo]}")
+
+
+
+def modeloFaltante():
+    print("\nIngrese el Tiempo que Desea Utilizar.")
+    tiempoLabels = ["Diario", "Semanal", "Mensual", "Anual"]
+    tiempo = cutie.select(tiempoLabels)
+
+
+    c = cutie.get_number("\nIngrese el valor unitario del Producto: ")
+
+    D = cutie.get_number(f"\nIngrese el valor de la Demanda en {tiempoLabels[tiempo]}: ")
+
+    k = cutie.get_number("\nIngrese el costo del Pedido: ")
+
+    h = cutie.get_number("\nIngrese el costo de Almacenar: ")
+
+    l = cutie.get_number(f"\nIngrese el tiempo de Entrega: ")
+
+    pe = cutie.get_number("\nIngrese el costo por perdida: ")
+
+    Q = calcQFaltante(D, k, h, pe)
+    e = calcE(D, k, h, pe)
+
+    T = Q / D
+
+    costo = calcCostoFaltante(D, c, Q, h, k, e=e, pe=pe)
+
+    if l < T:
+        R = D*l
+
+    else:
+        m = 0
+        while((l-m*T < 0) or (l - ((m+1)*T) > 0)): m+=1
+        R = D * (l-m*T)
+
+
+
 
 def ejercicio3():
-    
-
     print("\nMenu de Opciones")
     options = ["Clasificacion ABC", "Lote Economico Simple", "Lote Economico Descuento", "Lote Economico Faltante"]
     opt = cutie.select(options=options)

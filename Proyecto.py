@@ -1,6 +1,8 @@
 import random
 import matplotlib.pyplot as plt
 import numpy as np
+import cutie
+from math import sqrt
 
 # x = random.randrange(80,100)
 # vectores =[[random.randrange(80,100) for _ in range(40)] for _ in range(4)]
@@ -73,15 +75,90 @@ def determinarTipoABC(datos):
     return a
 
 
+
+
+
+def calcQ(D, k, h):
+    return sqrt((2*k*D)/h)
+
+def calcQFaltante(D, k, h, pe):
+    return sqrt(((2*k*D)*(h+pe))/(h*pe))
+
+def calcE(D, k, h, pe):
+    return sqrt((2*k*D*h) / (h+pe) * pe)
+
+def calcCosto(D, c, Q, h, k):
+    return (c*D) + (k * (D/Q)) + ((1/2)*h*Q)
+
+def calcCostoFaltante(D, c, Q, h, k, pe, e):
+    return (c*D) + (k * (D/Q)) + (h*(Q-e)**2 / 2*Q) + (pe**2 / 2*Q)
+    
+def calcD(R, l):
+    return R / l
+
+
+
+
+def modeloSimple():
+    print("\nIngrese el Tiempo que Desea Utilizar.")
+    tiempoLabels = ["Diario", "Semanal", "Mensual", "Anual"]
+    tiempo = cutie.select(tiempoLabels)
+
+    c = cutie.get_number("\nIngrese el valor unitario del Producto: ")
+
+    D = cutie.get_number(f"\nIngrese el valor de la Demanda en {tiempoLabels[tiempo]}: ")
+
+    k = cutie.get_number("\nIngrese el costo del Pedido: ")
+
+    h = cutie.get_number("\nIngrese el costo de Almacenar: ")
+
+    l = cutie.get_number(f"\nIngrese el tiempo de Entrega: ")
+
+    Q = calcQ(D, k, h)
+
+    costo = calcCosto(D, c, Q, h, k)
+
+    T = Q / D
+
+    if l < T:
+        R = D*l
+
+    else:
+        m = 0
+        while((l-m*T < 0) or (l - ((m+1)*T) > 0)): m+=1
+        R = D * (l-m*T)
+
+    print(f"\n Cantidad a pedir {Q}, la cual tendra un costo de {costo} y se debe pedir cada el inventario disminuya a {R} todo calculado en el tiempo {tiempoLabels[tiempo]}")
+
+def ejercicio3():
+    
+
+    print("\nMenu de Opciones")
+    options = ["Clasificacion ABC", "Lote Economico Simple", "Lote Economico Descuento", "Lote Economico Faltante"]
+    opt = cutie.select(options=options)
+
+    if opt == 0:
+        datos = input("Ingrese el Arreglo de Datos: ").strip("[]").split(",")
+        datos = [int(i) for i in datos]
+        pieGraph(determinarTipoABC(datos))
+    elif opt == 1:
+        modeloSimple()
+    
+    
+
+
 if __name__ == "__main__":
-    #EJERCICIO 1
-    vectores =[[random.randrange(80,100) for _ in range(40)] for _ in range(4)]
-    for x in vectores:
-        print(f"El Vecto es: {determinarTipo(x)}")
-        y = np.array(x)
-        x = np.array([i for i in range(40)])
-        showGraph(x, y)
-    #EJERCICIO 2
-    newVector = [[random.randrange(5000, 20000) * random.randrange(5,10) for _ in range(40)] for _ in range(4)]
-    for z in newVector:
-        pieGraph(determinarTipoABC(z))
+    # #EJERCICIO 1
+    # vectores =[[random.randrange(80,100) for _ in range(40)] for _ in range(4)]
+    # for x in vectores:
+    #     print(f"El Vecto es: {determinarTipo(x)}")
+    #     y = np.array(x)
+    #     x = np.array([i for i in range(40)])
+    #     showGraph(x, y)
+    # #EJERCICIO 2
+    # newVector = [[random.randrange(5000, 20000) * random.randrange(5,10) for _ in range(40)] for _ in range(4)]
+    # for z in newVector:
+    #     pieGraph(determinarTipoABC(z))
+    
+    #EJERCICIO 3
+    ejercicio3()
